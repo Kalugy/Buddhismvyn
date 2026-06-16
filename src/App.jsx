@@ -3,19 +3,48 @@ import { modules } from "./data/modules";
 import { useProgress } from "./hooks/useProgress";
 import ModuleCard from "./components/ModuleCard";
 import ModuleDetail from "./components/ModuleDetail";
+import FinalQuiz from "./components/FinalQuiz";
 import ChatView from "./components/ChatView";
-import { BookOpen, MessageCircle, RotateCcw } from "lucide-react";
+import { BookOpen, MessageCircle, RotateCcw, Trophy } from "lucide-react";
 
 export default function App() {
   const [tab, setTab] = useState("learn");
   const [selectedModuleId, setSelectedModuleId] = useState(null);
-  const { progress, completeLesson, completeModule, isLessonComplete, isModuleComplete, isModuleUnlocked, resetProgress } = useProgress();
+  const [showFinalQuiz, setShowFinalQuiz] = useState(false);
+  const { progress, completeLesson, completeModule, isLessonComplete, isModuleComplete, resetProgress } = useProgress();
 
   const totalLessons = modules.reduce((sum, m) => sum + m.lessons.length, 0);
   const completedLessons = progress.completedLessons.length;
   const completedModulesCount = progress.completedModules.length;
+  const finalQuizPassed = progress.completedModules.includes("final");
 
   const selectedModule = modules.find((m) => m.id === selectedModuleId);
+
+  const handleFinalQuizComplete = (score) => completeModule("final", score);
+
+  if (showFinalQuiz) {
+    return (
+      <div className="min-h-screen bg-stone-50">
+        <header className="bg-white border-b border-stone-100 sticky top-0 z-10 shadow-sm">
+          <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-3">
+            <span className="text-2xl">☸️</span>
+            <div>
+              <h1 className="font-bold text-stone-900 text-lg leading-none">Dharma Path</h1>
+              <p className="text-xs text-stone-400">Final Course Quiz</p>
+            </div>
+          </div>
+        </header>
+        <main className="max-w-3xl mx-auto px-4 py-8">
+          <FinalQuiz
+            onBack={() => setShowFinalQuiz(false)}
+            onComplete={handleFinalQuizComplete}
+            alreadyPassed={finalQuizPassed}
+            savedScore={progress.finalQuizScore}
+          />
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-stone-50">
@@ -31,7 +60,7 @@ export default function App() {
           </div>
           <div className="flex items-center gap-2 text-xs text-stone-500">
             <span className="bg-stone-100 px-2 py-1 rounded-full">{completedLessons}/{totalLessons} lessons</span>
-            <span className="bg-amber-100 text-amber-700 px-2 py-1 rounded-full">{completedModulesCount}/4 modules</span>
+            {finalQuizPassed && <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full">🏆 Certified</span>}
           </div>
         </div>
       </header>
@@ -62,7 +91,7 @@ export default function App() {
           <div>
             <div className="mb-8">
               <h2 className="text-2xl font-bold text-stone-900">Your Learning Path</h2>
-              <p className="text-stone-500 mt-1">Complete each module to unlock the next. Start with the history of Buddhism and work toward meditation practice.</p>
+              <p className="text-stone-500 mt-1">Explore all modules freely — learn history, teachings, practice, and meditation at your own pace.</p>
             </div>
 
             {/* Progress bar */}
@@ -77,22 +106,45 @@ export default function App() {
                   style={{ width: `${(completedLessons / totalLessons) * 100}%` }}
                 />
               </div>
-              <div className="flex gap-4 mt-3 text-xs text-stone-400">
-                <span>{completedLessons} lessons completed</span>
-                <span>{completedModulesCount} modules passed</span>
+              <div className="mt-3 text-xs text-stone-400">
+                {completedLessons} of {totalLessons} lessons completed
               </div>
             </div>
 
-            <div className="grid gap-4">
+            {/* Module cards */}
+            <div className="grid gap-4 mb-6">
               {modules.map((mod) => (
                 <ModuleCard
                   key={mod.id}
                   module={mod}
-                  isUnlocked={isModuleUnlocked(mod.id)}
                   isComplete={isModuleComplete(mod.id)}
                   onClick={() => setSelectedModuleId(mod.id)}
                 />
               ))}
+            </div>
+
+            {/* Final Quiz card */}
+            <div
+              onClick={() => setShowFinalQuiz(true)}
+              className="cursor-pointer rounded-2xl overflow-hidden shadow-lg hover:scale-[1.02] hover:shadow-2xl transition-all duration-300"
+            >
+              <div className="bg-gradient-to-br from-stone-800 to-stone-600 p-6 flex items-center justify-between">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xs font-semibold uppercase tracking-widest text-white/60">Final</span>
+                    {finalQuizPassed && (
+                      <span className="bg-yellow-400/20 text-yellow-300 text-xs px-2 py-0.5 rounded-full font-medium">Passed ✓</span>
+                    )}
+                  </div>
+                  <h3 className="text-2xl font-bold text-white">Course Quiz</h3>
+                  <p className="text-white/70 text-sm mt-1">10 questions across all 4 modules — test your full knowledge of the Dharma</p>
+                </div>
+                <div className="ml-6 flex-shrink-0">
+                  <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center">
+                    <Trophy className={`w-7 h-7 ${finalQuizPassed ? "text-yellow-400" : "text-white/70"}`} />
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="mt-8 flex justify-center">
@@ -113,8 +165,6 @@ export default function App() {
             onBack={() => setSelectedModuleId(null)}
             isLessonComplete={isLessonComplete}
             completeLesson={completeLesson}
-            isModuleComplete={isModuleComplete}
-            completeModule={completeModule}
           />
         )}
 

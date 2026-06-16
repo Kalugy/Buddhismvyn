@@ -5,7 +5,8 @@ const STORAGE_KEY = "buddhism_app_progress";
 const defaultProgress = {
   completedLessons: [],
   completedModules: [],
-  unlockedModules: [1],
+  unlockedModules: [1, 2, 3, 4],
+  finalQuizScore: null,
 };
 
 export function useProgress() {
@@ -31,21 +32,14 @@ export function useProgress() {
     }));
   };
 
-  const completeModule = (moduleId) => {
-    setProgress((prev) => {
-      const nextModuleId = moduleId + 1;
-      const newUnlocked =
-        !prev.unlockedModules.includes(nextModuleId) && nextModuleId <= 4
-          ? [...prev.unlockedModules, nextModuleId]
-          : prev.unlockedModules;
-      return {
-        ...prev,
-        completedModules: prev.completedModules.includes(moduleId)
-          ? prev.completedModules
-          : [...prev.completedModules, moduleId],
-        unlockedModules: newUnlocked,
-      };
-    });
+  const completeModule = (moduleId, score = null) => {
+    setProgress((prev) => ({
+      ...prev,
+      completedModules: prev.completedModules.includes(moduleId)
+        ? prev.completedModules
+        : [...prev.completedModules, moduleId],
+      ...(score !== null ? { finalQuizScore: score } : {}),
+    }));
   };
 
   const isLessonComplete = (lessonId) => progress.completedLessons.includes(lessonId);

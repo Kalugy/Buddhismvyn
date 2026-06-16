@@ -1,14 +1,10 @@
-import { Lock, CheckCircle, ChevronRight } from "lucide-react";
+import { CheckCircle, ChevronRight } from "lucide-react";
 
-export default function ModuleCard({ module, isUnlocked, isComplete, onClick }) {
+export default function ModuleCard({ module, isComplete, onClick }) {
   return (
     <div
-      onClick={isUnlocked ? onClick : undefined}
-      className={`relative rounded-2xl overflow-hidden transition-all duration-300 ${
-        isUnlocked
-          ? "cursor-pointer hover:scale-[1.02] hover:shadow-2xl shadow-lg"
-          : "opacity-50 cursor-not-allowed"
-      }`}
+      onClick={onClick}
+      className="relative rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer hover:scale-[1.02] hover:shadow-2xl shadow-lg"
     >
       <div className={`bg-gradient-to-br ${module.color} p-6 min-h-[180px] flex flex-col justify-between`}>
         <div className="flex items-start justify-between">
@@ -32,11 +28,7 @@ export default function ModuleCard({ module, isUnlocked, isComplete, onClick }) 
         <div className="flex items-center justify-between mt-4">
           <p className="text-white/70 text-sm line-clamp-2 flex-1">{module.description}</p>
           <div className="ml-4 flex-shrink-0">
-            {!isUnlocked ? (
-              <div className="w-10 h-10 rounded-full bg-black/30 flex items-center justify-center">
-                <Lock className="w-5 h-5 text-white/70" />
-              </div>
-            ) : isComplete ? (
+            {isComplete ? (
               <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                 <CheckCircle className="w-5 h-5 text-white" />
               </div>
@@ -48,15 +40,6 @@ export default function ModuleCard({ module, isUnlocked, isComplete, onClick }) 
           </div>
         </div>
       </div>
-
-      {!isUnlocked && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="bg-black/40 backdrop-blur-sm rounded-xl px-4 py-2 flex items-center gap-2">
-            <Lock className="w-4 h-4 text-white" />
-            <span className="text-white text-sm font-medium">Complete Module {module.id - 1} to unlock</span>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
