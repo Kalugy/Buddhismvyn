@@ -7,6 +7,8 @@ const defaultProgress = {
   completedModules: [],
   unlockedModules: [1, 2, 3, 4],
   finalQuizScore: null,
+  lessonCompletedAt: {},   // { [lessonId]: ISO timestamp }
+  moduleQuizScores: {},    // { [moduleId]: { score, total } }
 };
 
 export function useProgress() {
@@ -29,6 +31,9 @@ export function useProgress() {
       completedLessons: prev.completedLessons.includes(lessonId)
         ? prev.completedLessons
         : [...prev.completedLessons, lessonId],
+      lessonCompletedAt: prev.lessonCompletedAt?.[lessonId]
+        ? prev.lessonCompletedAt
+        : { ...(prev.lessonCompletedAt || {}), [lessonId]: new Date().toISOString() },
     }));
   };
 

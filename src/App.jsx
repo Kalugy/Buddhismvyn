@@ -5,7 +5,10 @@ import ModuleCard from "./components/ModuleCard";
 import ModuleDetail from "./components/ModuleDetail";
 import FinalQuiz from "./components/FinalQuiz";
 import ChatView from "./components/ChatView";
-import { BookOpen, MessageCircle, RotateCcw, Trophy } from "lucide-react";
+import FlashCards from "./components/FlashCards";
+import MindMap from "./components/MindMap";
+import Insights from "./components/Insights";
+import { BookOpen, RotateCcw, Trophy, Layers, Network, TrendingUp } from "lucide-react";
 
 export default function App() {
   const [tab, setTab] = useState("learn");
@@ -76,11 +79,25 @@ export default function App() {
             Learn
           </button>
           <button
-            onClick={() => setTab("chat")}
-            className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${tab === "chat" ? "border-amber-600 text-amber-700" : "border-transparent text-stone-500 hover:text-stone-700"}`}
+            onClick={() => setTab("cards")}
+            className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${tab === "cards" ? "border-amber-600 text-amber-700" : "border-transparent text-stone-500 hover:text-stone-700"}`}
           >
-            <MessageCircle className="w-4 h-4" />
-            Ask the Teacher
+            <Layers className="w-4 h-4" />
+            Memory Cards
+          </button>
+          <button
+            onClick={() => setTab("map")}
+            className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${tab === "map" ? "border-amber-600 text-amber-700" : "border-transparent text-stone-500 hover:text-stone-700"}`}
+          >
+            <Network className="w-4 h-4" />
+            Mind Map
+          </button>
+          <button
+            onClick={() => setTab("insights")}
+            className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${tab === "insights" ? "border-amber-600 text-amber-700" : "border-transparent text-stone-500 hover:text-stone-700"}`}
+          >
+            <TrendingUp className="w-4 h-4" />
+            Insights
           </button>
         </div>
       </div>
@@ -168,7 +185,14 @@ export default function App() {
           />
         )}
 
-        {tab === "chat" && <ChatView />}
+        {tab === "cards" && <FlashCards />}
+        {tab === "map" && <MindMap />}
+        {tab === "insights" && (
+          <Insights
+            progress={progress}
+            onGoToModule={(moduleId) => { setTab("learn"); setSelectedModuleId(moduleId); }}
+          />
+        )}
       </main>
     </div>
   );
