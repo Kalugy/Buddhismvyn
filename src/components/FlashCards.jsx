@@ -115,20 +115,20 @@ function FlipCard({ card, index, total }) {
         >
           {/* Front */}
           <div
-            className="absolute inset-0 rounded-2xl bg-white border border-stone-200 shadow-lg flex flex-col items-center justify-center p-8 gap-3"
+            className="absolute inset-0 rounded-2xl bg-white border border-stone-200 shadow-lg flex flex-col items-center justify-center p-5 sm:p-8 gap-3"
             style={{ backfaceVisibility: "hidden" }}
           >
-            <p className="text-xs font-semibold uppercase tracking-widest text-stone-400">{card.extra}</p>
-            <h2 className="text-2xl font-bold text-stone-900 text-center">{card.front}</h2>
+            <p className="text-xs font-semibold uppercase tracking-widest text-stone-400 text-center">{card.extra}</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-stone-900 text-center">{card.front}</h2>
             <p className="text-xs text-stone-400 mt-2">tap to reveal</p>
           </div>
           {/* Back */}
           <div
-            className="absolute inset-0 rounded-2xl bg-amber-50 border border-amber-200 shadow-lg flex flex-col items-center justify-center p-8 gap-3"
+            className="absolute inset-0 rounded-2xl bg-amber-50 border border-amber-200 shadow-lg flex flex-col items-center justify-center p-5 sm:p-8 gap-3"
             style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
           >
-            <p className="text-xs font-semibold uppercase tracking-widest text-amber-600">{card.extra}</p>
-            <p className="text-base text-stone-700 text-center leading-relaxed">{card.back}</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-amber-600 text-center">{card.extra}</p>
+            <p className="text-sm sm:text-base text-stone-700 text-center leading-relaxed">{card.back}</p>
             <p className="text-xs text-stone-400 mt-2">tap to flip back</p>
           </div>
         </div>
@@ -216,32 +216,32 @@ function MatchGame({ deck }) {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-3">
-          <div className="space-y-2">
+        <div className="grid grid-cols-2 gap-2 sm:gap-3">
+          <div className="space-y-1.5 sm:space-y-2">
             <p className="text-xs font-semibold uppercase tracking-widest text-stone-400 mb-2">Terms</p>
             {terms.map(item => (
               <button
                 key={item.id}
                 onClick={() => handlePick(item)}
                 disabled={matched.has(item.id)}
-                className={`w-full text-left px-4 py-3 rounded-xl border text-sm font-medium transition-all ${cardClass(item)}`}
+                className={`w-full text-left px-3 py-2.5 sm:px-4 sm:py-3 rounded-xl border text-xs sm:text-sm font-medium transition-all ${cardClass(item)}`}
               >
-                {matched.has(item.id) && <CheckCircle2 className="w-3.5 h-3.5 inline mr-1.5 text-green-500" />}
+                {matched.has(item.id) && <CheckCircle2 className="w-3 h-3 inline mr-1 text-green-500" />}
                 {item.text}
               </button>
             ))}
           </div>
-          <div className="space-y-2">
+          <div className="space-y-1.5 sm:space-y-2">
             <p className="text-xs font-semibold uppercase tracking-widest text-stone-400 mb-2">Meanings</p>
             {defs.map(item => (
               <button
                 key={item.id}
                 onClick={() => handlePick(item)}
                 disabled={matched.has(item.id)}
-                className={`w-full text-left px-4 py-3 rounded-xl border text-xs leading-snug transition-all ${cardClass(item)}`}
+                className={`w-full text-left px-3 py-2.5 sm:px-4 sm:py-3 rounded-xl border text-xs leading-snug transition-all ${cardClass(item)}`}
               >
                 {matched.has(item.id) && <CheckCircle2 className="w-3 h-3 inline mr-1 text-green-500" />}
-                {item.text}
+                <span className="line-clamp-3">{item.text}</span>
               </button>
             ))}
           </div>

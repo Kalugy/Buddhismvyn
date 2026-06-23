@@ -132,23 +132,23 @@ export default function Insights({ progress, onGoToModule }) {
       </div>
 
       {/* Quick stats */}
-      <div className="grid grid-cols-3 gap-3">
-        <div className="bg-white border border-stone-100 rounded-xl p-4 shadow-sm text-center">
-          <p className="text-3xl font-bold text-amber-600">{completedLessons.length}</p>
-          <p className="text-xs text-stone-400 mt-1">of {totalLessons} lessons</p>
-          <p className="text-xs font-medium text-stone-600 mt-0.5">Completed</p>
+      <div className="grid grid-cols-3 gap-2 sm:gap-3">
+        <div className="bg-white border border-stone-100 rounded-xl p-3 sm:p-4 shadow-sm text-center">
+          <p className="text-2xl sm:text-3xl font-bold text-amber-600">{completedLessons.length}</p>
+          <p className="text-xs text-stone-400 mt-1">of {totalLessons}</p>
+          <p className="text-xs font-medium text-stone-600 mt-0.5">Lessons</p>
         </div>
-        <div className="bg-white border border-stone-100 rounded-xl p-4 shadow-sm text-center">
-          <p className="text-3xl font-bold text-green-600">{completedModuleCount}</p>
-          <p className="text-xs text-stone-400 mt-1">of {modules.length} modules</p>
-          <p className="text-xs font-medium text-stone-600 mt-0.5">Mastered</p>
+        <div className="bg-white border border-stone-100 rounded-xl p-3 sm:p-4 shadow-sm text-center">
+          <p className="text-2xl sm:text-3xl font-bold text-green-600">{completedModuleCount}</p>
+          <p className="text-xs text-stone-400 mt-1">of {modules.length}</p>
+          <p className="text-xs font-medium text-stone-600 mt-0.5">Modules</p>
         </div>
-        <div className="bg-white border border-stone-100 rounded-xl p-4 shadow-sm text-center">
-          <p className="text-3xl font-bold text-purple-600">
+        <div className="bg-white border border-stone-100 rounded-xl p-3 sm:p-4 shadow-sm text-center">
+          <p className="text-2xl sm:text-3xl font-bold text-purple-600">
             {finalQuizScore !== null ? `${finalQuizScore}/10` : "—"}
           </p>
           <p className="text-xs text-stone-400 mt-1">
-            {finalQuizScore !== null ? (finalQuizScore >= 7 ? "Excellent" : "Keep studying") : "not taken"}
+            {finalQuizScore !== null ? (finalQuizScore >= 7 ? "Excellent" : "Review") : "not taken"}
           </p>
           <p className="text-xs font-medium text-stone-600 mt-0.5">Final Quiz</p>
         </div>
@@ -239,24 +239,22 @@ export default function Insights({ progress, onGoToModule }) {
             {reviewQueue.map(({ id, lesson, mod, urgency }) => (
               <div
                 key={id}
-                className="flex items-center justify-between bg-stone-50 rounded-xl px-4 py-3"
+                className="flex items-center justify-between bg-stone-50 rounded-xl px-3 py-2.5 sm:px-4 sm:py-3 gap-2"
               >
-                <div className="flex items-center gap-3 min-w-0">
-                  <span className="text-lg flex-shrink-0">{urgency.icon}</span>
+                <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                  <span className="text-base sm:text-lg flex-shrink-0">{urgency.icon}</span>
                   <div className="min-w-0">
-                    <p className="text-sm font-medium text-stone-800 truncate">{lesson.title}</p>
-                    <p className="text-xs text-stone-400">{mod.icon} {mod.title}</p>
+                    <p className="text-xs sm:text-sm font-medium text-stone-800 truncate">{lesson.title}</p>
+                    <p className="text-xs text-stone-400 truncate">{mod.icon} {mod.title}</p>
                   </div>
                 </div>
-                <div className="text-right flex-shrink-0 ml-3">
+                <div className="text-right flex-shrink-0">
                   <p className={`text-xs font-bold ${
                     urgency.color === 'red' ? 'text-red-600' :
                     urgency.color === 'orange' ? 'text-orange-600' : 'text-amber-600'
                   }`}>{urgency.label}</p>
                   <p className="text-xs text-stone-400">
-                    {urgency.days < 1 ? "today" :
-                     urgency.days < 2 ? "yesterday" :
-                     `${Math.floor(urgency.days)}d ago`}
+                    {urgency.days < 2 ? "yesterday" : `${Math.floor(urgency.days)}d ago`}
                   </p>
                 </div>
               </div>

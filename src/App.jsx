@@ -70,35 +70,23 @@ export default function App() {
 
       {/* Tab bar */}
       <div className="bg-white border-b border-stone-100">
-        <div className="max-w-3xl mx-auto px-4 flex">
-          <button
-            onClick={() => { setTab("learn"); setSelectedModuleId(null); }}
-            className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${tab === "learn" ? "border-amber-600 text-amber-700" : "border-transparent text-stone-500 hover:text-stone-700"}`}
-          >
-            <BookOpen className="w-4 h-4" />
-            Learn
-          </button>
-          <button
-            onClick={() => setTab("cards")}
-            className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${tab === "cards" ? "border-amber-600 text-amber-700" : "border-transparent text-stone-500 hover:text-stone-700"}`}
-          >
-            <Layers className="w-4 h-4" />
-            Memory Cards
-          </button>
-          <button
-            onClick={() => setTab("map")}
-            className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${tab === "map" ? "border-amber-600 text-amber-700" : "border-transparent text-stone-500 hover:text-stone-700"}`}
-          >
-            <Network className="w-4 h-4" />
-            Mind Map
-          </button>
-          <button
-            onClick={() => setTab("insights")}
-            className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${tab === "insights" ? "border-amber-600 text-amber-700" : "border-transparent text-stone-500 hover:text-stone-700"}`}
-          >
-            <TrendingUp className="w-4 h-4" />
-            Insights
-          </button>
+        <div className="max-w-3xl mx-auto px-2 sm:px-4 flex overflow-x-auto scrollbar-none">
+          {[
+            { id: "learn",    Icon: BookOpen,   label: "Learn",    short: "Learn" },
+            { id: "cards",    Icon: Layers,     label: "Memory Cards", short: "Cards" },
+            { id: "map",      Icon: Network,    label: "Mind Map", short: "Map" },
+            { id: "insights", Icon: TrendingUp, label: "Insights", short: "Insights" },
+          ].map(({ id, Icon, label, short }) => (
+            <button
+              key={id}
+              onClick={() => { setTab(id); if (id === "learn") setSelectedModuleId(null); }}
+              className={`flex-shrink-0 flex items-center gap-1.5 px-3 sm:px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${tab === id ? "border-amber-600 text-amber-700" : "border-transparent text-stone-500 hover:text-stone-700"}`}
+            >
+              <Icon className="w-4 h-4" />
+              <span className="sm:hidden">{short}</span>
+              <span className="hidden sm:inline">{label}</span>
+            </button>
+          ))}
         </div>
       </div>
 

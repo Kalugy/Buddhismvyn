@@ -150,37 +150,39 @@ export default function MindMap() {
   return (
     <div className="max-w-4xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between mb-5">
-        <div>
+      <div className="flex items-start justify-between mb-5 gap-3">
+        <div className="min-w-0">
           <h2 className="text-2xl font-bold text-stone-900">Mind Map</h2>
-          <p className="text-stone-500 text-sm mt-0.5">Click any node to unlock its connections</p>
+          <p className="text-stone-500 text-sm mt-0.5 hidden sm:block">Click any node to unlock its connections</p>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-stone-400 bg-stone-100 px-2.5 py-1 rounded-full font-mono">
+        <div className="flex items-center gap-1.5 flex-shrink-0">
+          <span className="text-xs text-stone-400 bg-stone-100 px-2 py-1 rounded-full font-mono hidden sm:inline">
             {unlocked.size} / {ALL_IDS.size}
           </span>
           <button
             onClick={reset}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-stone-200 text-xs text-stone-600 hover:bg-stone-50 transition-colors"
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-stone-200 text-xs text-stone-600 hover:bg-stone-50 transition-colors"
           >
-            <RotateCcw className="w-3.5 h-3.5" /> Reset
+            <RotateCcw className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Reset</span>
           </button>
           <button
             onClick={showAll}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-stone-900 text-white text-xs hover:bg-stone-700 transition-colors"
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-stone-900 text-white text-xs hover:bg-stone-700 transition-colors"
           >
-            <Maximize2 className="w-3.5 h-3.5" /> Complete All
+            <Maximize2 className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Complete All</span>
           </button>
         </div>
       </div>
 
-      {/* SVG canvas */}
-      <div className="rounded-2xl overflow-hidden border border-stone-800 shadow-2xl bg-stone-950">
+      {/* SVG canvas – horizontally scrollable on mobile */}
+      <p className="text-xs text-stone-400 text-center mb-2 sm:hidden">← Scroll to explore →</p>
+      <div className="rounded-2xl overflow-hidden border border-stone-800 shadow-2xl bg-stone-950 overflow-x-auto">
         <svg
           viewBox={`0 0 ${W} ${H}`}
-          width="100%"
           overflow="visible"
-          style={{ display: "block", background: "linear-gradient(135deg, #0c0a09 0%, #111827 100%)" }}
+          style={{ display: "block", minWidth: "900px", width: "100%", background: "linear-gradient(135deg, #0c0a09 0%, #111827 100%)" }}
         >
           <defs>
             {/* Dot-grid pattern */}
